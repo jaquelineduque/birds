@@ -7,5 +7,6 @@ defmodule BirdsWeb.Router do
 
   scope "/api", BirdsWeb do
     pipe_through :api
+    resources "/birds", BirdRegisterController, except: [:new, :edit]
   end
 end
