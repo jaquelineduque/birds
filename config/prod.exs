@@ -10,11 +10,20 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :birds, BirdsWeb.Endpoint,
-  url: [host: "example.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  load_from_system_env: true,
+  url: [
+    host: Application.get_env(:birds, :app_hostname),
+    port: Application.get_env(:birds, :app_port)
+  ],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  root: ".",
+  version: Application.spec(:birds_app, :vsn)
 
 # Do not print debug messages in production
 config :logger, level: :info
+
+config :birds, BirdsWeb.Endpoint
 
 # ## SSL Support
 #
@@ -52,4 +61,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"
