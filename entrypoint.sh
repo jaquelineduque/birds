@@ -1,11 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 # Docker entrypoint script.
 
+echo "Staring entry"
 
 # Wait until Postgres is ready
-while ! pg_isready -q -h $PGHOST -p $PGPORT -U $PGUSER
+while ! pg_isready -h $PGHOST -p $PGPORT -U $PGUSER
 do
-  echo "$(date) - waiting for database to start"
+  echo "$(date) - waiting for database to start - $(pg_isready)"
   sleep 2
 done
 

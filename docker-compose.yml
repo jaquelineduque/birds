@@ -1,5 +1,5 @@
 # Version of docker-compose
-version: '3'
+version: '3.4'
 
 # Containers we are going to run
 services:
@@ -9,6 +9,8 @@ services:
     build:
       # Here we define that it should build from the current directory
       context: .
+    expose:
+      - "4000"
     environment:
       # Variables to connect to our Postgres server
       PGUSER: postgres
@@ -23,18 +25,29 @@ services:
     depends_on:
       # The db container needs to be started before we start this container
       - db
+    network_mode: "host"
   db:
     # We use the predefined Postgres image
     image: postgres:9.6
+    
+    ports:
+      - "5432:5432"
     environment:
       # Set user/password for Postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: xFzd13?
+      POSTGRES_DB: birds_dev
       # Set a path where Postgres should store the data
       PGDATA: /var/lib/postgresql/data/pgdata
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
+    network_mode: "host"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 # Define the volumes
 volumes:
   pgdata:

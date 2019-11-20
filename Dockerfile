@@ -2,7 +2,7 @@
 FROM elixir:latest
 
 RUN apt-get update && \
-  apt-get install -y postgresql-client
+  apt-get install -f -y postgresql-client
 
 # Create app directory and copy the Elixir projects into it
 RUN mkdir /app
@@ -16,5 +16,5 @@ RUN mix local.rebar --force
 
 # Compile the project
 RUN mix do compile
-RUN chmod +x ./entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 CMD ["/app/entrypoint.sh"]
